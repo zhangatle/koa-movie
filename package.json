@@ -1,0 +1,22 @@
+{
+  "name": "koa-movie",
+  "version": "1.0.0",
+  "description": "a movie website based on koa2",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhangatle/koa-movie.git"
+  },
+  "keywords": [
+    "koa2"
+  ],
+  "author": "zhangatle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhangatle/koa-movie/issues"
+  },
+  "homepage": "https://github.com/zhangatle/koa-movie#readme"
+}
