@@ -4,6 +4,7 @@
   "description": "a movie website based on koa2",
   "main": "server/index.js",
   "scripts": {
+    "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/zhangatle/koa-movie/issues"
   },
-  "homepage": "https://github.com/zhangatle/koa-movie#readme"
+  "homepage": "https://github.com/zhangatle/koa-movie#readme",
+  "dependencies": {
+    "koa": "^2.6.2"
+  }
 }
