@@ -5,6 +5,10 @@ const {resolve} = require('path');
 
 mongoose.Promise = global.Promise;
 
+exports.initSchemas = () => {
+    glob.sync(resolve(__dirname, './schema', '**/*.js')).forEach(require);
+};
+
 
 exports.connect = () => {
     let maxConnectTimes = 0;
