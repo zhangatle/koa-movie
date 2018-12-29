@@ -2,7 +2,7 @@ const Koa = require('koa');
 const {resolve} = require("path");
 const {connect, initSchemas} = require('./database/init');
 const R = require('ramda');
-const MIDDLEWARES = ['router'];
+const MIDDLEWARES = ['router','parcel'];
 
 const useMiddlewares = (app) => {
     R.map(
@@ -19,6 +19,12 @@ const useMiddlewares = (app) => {
 ;(async () => {
     await connect();
     initSchemas();
+
+    // require('./tasks/movie');
+    // require('./tasks/api');
+    // require('./tasks/trailer');
+    // require('./tasks/qiniu');
+
 
     const app = new Koa();
     await useMiddlewares(app);

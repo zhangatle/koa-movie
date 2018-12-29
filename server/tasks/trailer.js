@@ -1,19 +1,16 @@
 const cp = require('child_process');
 const {resolve } = require('path');
+const mongoose = require('mongoose');
+const Movie = mongoose.model('Movie');
+const Category = mongoose.model('Category');
 
 ;(async () => {
-    let movies = [
-        { doubanId: 30358789,
-            title: '潮间奇事',
-            rate: 6.2,
-            poster: 'https://img3.doubanio.com/view/photo/l_ratio_poster/public/p2540641704.jpg'
-        },
-        { doubanId: 27092648,
-            title: '蒙上你的眼',
-            rate: 6.9,
-            poster: 'https://img3.doubanio.com/view/photo/l_ratio_poster/public/p2537908150.jpg'
-        },
-    ];
+    let movies = await Movie.find({
+        $or: [
+            {video: {$exists: false}},
+            {video: null}
+        ]
+    });
 
     const script = resolve(__dirname, '../crawler/video');
     const child = cp.fork(script, []);
@@ -33,8 +30,32 @@ const {resolve } = require('path');
     });
 
     child.on('message', async data => {
-        console.log(data);
-    })
+        let doubanId = data.doubanId;
+        let movie = await Movie.findOne({
+            doubanId: doubanId
+        });
+        if(data.video){
+            movie.video = data.video;
+            movie.cover = data.cover;
+            await movie.save();
+        }else{
+            await movie.remove();
+            let movieTypes = movie.movieTypes;
+            for(let i=0;i<movieTypes.length;i++){
+                let type = movieTypes[i];
+                let cat = Category.findOne({
+                    name: type
+                });
+                if(cat && cat.movies){
+                    let idx = cat.movies.indexOf(movie._id);
+                    if(idx > -1){
+                        cat.movies = cat.movies.splice(idx, 1)
+                    }
+                    await cat.save();
+                }
+            }
+        }
+    });
 
     child.send(movies);
 })();
